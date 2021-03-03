@@ -7,14 +7,24 @@ from actionlib_msgs.msg import GoalStatus
 from ensenso_camera_msgs.msg import RequestDataAction, RequestDataGoal
 from ensenso_camera_msgs.msg import RequestDataMonoAction, RequestDataMonoGoal
 from ensenso_camera_msgs.msg import TexturedPointCloudAction, TexturedPointCloudGoal
+from ensenso_camera_msgs.msg import TelecentricProjectionAction, TelecentricProjectionGoal 
 
+
+frame = '4103638864_optical_frame'
+def wait_for_server_succeed(projected_point_cloud_client, timeout):
+    if not projected_point_cloud_client.wait_for_result(rospy.Duration(timeout)):
+        self.fail(msg="Waiting for result times out.")
+    if projected_point_cloud_client.get_state() != GoalStatus.SUCCEEDED:
+        self.fail(msg="Action did not succeed.")
 
 def main():
     loop_rate = rospy.get_param("~rate", 2)
     rgb_serial = rospy.get_param("~rgb_serial")
+    #print(rgb_serial)
+    #sys.exit()
     stereo_namespace = rospy.get_param("~stereo_ns", "/stereo_camera")
     rgb_namespace = rospy.get_param("~rgb_ns", "/rgb_camera")
-    timeout = rospy.get_param("~timeout", 60)
+    timeout = rospy.get_param("~timeout", 120)
 
     # The servers are scoped into the namespaces of the different cameras. Otherwise the topics would interfere.
     request_data_client_stereo = actionlib.SimpleActionClient(stereo_namespace + "/request_data",
@@ -24,17 +34,33 @@ def main():
 
     texture_point_cloud_client = actionlib.SimpleActionClient(stereo_namespace + "/texture_point_cloud",
                                                               TexturedPointCloudAction)
+    projected_point_cloud_client = actionlib.SimpleActionClient(stereo_namespace + "/project_telecentric",
+                                                              TelecentricProjectionAction)
+    
 
-    for client in [request_data_client_stereo, request_data_client_mono, texture_point_cloud_client]:
+    for client in [request_data_client_stereo, request_data_client_mono, texture_point_cloud_client, projected_point_cloud_client]:
         if not client.wait_for_server(rospy.Duration(timeout)):
             rospy.logerr("The camera node is not running!")
             sys.exit()
 
     request_data_goal_stereo = RequestDataGoal()
     request_data_goal_stereo.request_point_cloud = True
+    
+        
+    #my changes
+    request_data_goal_stereo.request_depth_image = True
+    request_data_goal_stereo.request_rectified_images = True
+    request_data_goal_stereo.publish_results = True
+
+    #print(help(request_data_goal_stereo))
+    #sys.exit()
+    #request_data_goal_stereo.request_projected_depth_image = True
+    request_data_goal_stereo.request_disparity_map = True
 
     request_data_goal_mono = RequestDataMonoGoal()
     request_data_goal_mono.request_rectified_images = True
+    #my changes
+    request_data_goal_mono.request_raw_images = True
 
     rate = rospy.Rate(loop_rate)
     while not rospy.is_shutdown():
@@ -48,6 +74,17 @@ def main():
             result = request_data_client_stereo.get_result()
             message = result.error
             rospy.logwarn(message)
+#        else:
+#            goal = TelecentricProjectionGoal()
+#            goal.request_depth_image = True
+#            goal.frame = frame
+#            goal.include_results_in_response = True
+#            projected_point_cloud_client.send_goal(goal)
+#
+#            wait_for_server_succeed(projected_point_cloud_client, timeout)
+#            result = projected_point_cloud_client.get_result()
+#            projected_pc = result.projected_point_cloud
+#
         if request_data_client_mono.get_state() != GoalStatus.SUCCEEDED:
             rospy.logwarn("Mono request action was not successful.")
             result = request_data_client_mono.get_result()

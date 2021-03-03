@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="mono_settings"   default="/home/app-2/ensenso/ensenso_mono_params3.json"/>
+  <arg name="stereo_settings" default="/home/app-2/ensenso/ensenso_stereo_params3.json"/>
+
+  <!-- Realsense Camera Launch -->
+  <node pkg="ensenso_camera" type="timed_roslaunch.sh"
+    args="0 ensenso_camera nodelet.launch
+          settings:=$(arg mono_settings)"
+    name="timed_roslaunch_1" output="screen">
+  </node>
+  <node pkg="ensenso_camera" type="timed_roslaunch.sh"
+    args="2 ensenso_camera nodelet_stereo.launch
+          settings:=$(arg stereo_settings)"
+    name="timed_roslaunch_2" output="screen">
+  </node>
+</launch>

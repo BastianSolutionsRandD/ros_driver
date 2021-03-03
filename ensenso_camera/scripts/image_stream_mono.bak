@@ -7,49 +7,9 @@ from actionlib_msgs.msg import GoalStatus
 from ensenso_camera_msgs.msg import Parameter
 from ensenso_camera_msgs.msg import RequestDataMonoAction, RequestDataMonoGoal
 from ensenso_camera_msgs.msg import SetParameterAction, SetParameterGoal
-from ensenso_camera_msgs.msg import GetParameterAction, GetParameterGoal
+
 from sensor_msgs.msg import Image
-#print(help(Parameter))
-#sys.exit()
 
-def get_camera_parameters():
-    
-    #parameter_set = rospy.get_param("~parameter_set", "")
-    get_parameter_client = actionlib.SimpleActionClient("get_parameter", GetParameterAction)
-    get_parameter_client.wait_for_server()
-    #set_parameter_client = actionlib.SimpleActionClient("set_parameter", SetParameterAction)
-    #set_parameter_client.wait_for_server()
-
-    get_parameter_goal = GetParameterGoal()
-    #get_parameter_goal.parameter_set = parameter_set
-    #get_parameter_goal.include_results_in_response = True
-    
-    #get_parameter_client.send_goal(GetParameterGoal(keys=[Parameter.EXPOSURE, Parameter.AUTO_EXPOSURE, Parameter.AUTO_GAIN,
-    #Parameter.GAIN, Parameter.REGION_OF_INTEREST]))
-    
-    get_parameter_client.send_goal(GetParameterGoal(keys=[Parameter.EXPOSURE, Parameter.AUTO_EXPOSURE, Parameter.AUTO_GAIN,
-    Parameter.GAIN]))
-    get_parameter_client.wait_for_result()
-
-    if not get_parameter_client.wait_for_server(rospy.Duration(timeout)):
-        rospy.logerr("The camera node is not running!")
-        sys.exit()
-    if get_parameter_client.get_state() != GoalStatus.SUCCEEDED:
-        rospy.logwarn("Action was not successful.")
-    exposure = get_parameter_client.get_result().results[0].float_value
-    rospy.loginfo('Exposure value is : {}'.format(exposure))
-    
-    auto_exposure = get_parameter_client.get_result().results[1].bool_value
-    rospy.loginfo('Auto Exposure value is : {}'.format(auto_exposure))
-    
-    auto_gain = get_parameter_client.get_result().results[2].bool_value
-    rospy.loginfo('Auto gain value is : {}'.format(auto_gain))
-    
-    gain = get_parameter_client.get_result().results[3].float_value
-    rospy.loginfo('Gain value is : {}'.format(gain))
-    
-    #roi = get_parameter_client.get_result().results[4].region_of_interest_value
-    #rospy.loginfo('ROI value is : \n {}'.format(roi))
 
 def main():
     loop_rate = rospy.get_param("~rate", 30)
@@ -97,10 +57,7 @@ def main():
 
 if __name__ == "__main__":
     try:
-        #timeout = rospy.get_param("~timeout", 60)
         rospy.init_node("ensenso_camera_image_stream")
-        #get_camera_parameters()
-        #sys.exit()
         main()
     except rospy.ROSInterruptException:
         pass

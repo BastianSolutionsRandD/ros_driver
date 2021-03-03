@@ -8,6 +8,7 @@
 
 #include <mutex>
 #include <string>
+#include <ros/console.h>
 
 using PointCloud = pcl::PointCloud<pcl::PointXYZ>;
 using TexturedPointCloud = pcl::PointCloud<pcl::PointXYZRGB>;
@@ -63,7 +64,9 @@ TexturedPointCloud::Ptr texturePointCloudFromRectifiedImage(cv::Mat const& image
       }
     }
   }
-
+  ROS_ERROR("%d\n",pointCloud->width);
+  ROS_DEBUG("%d\n",image.rows);
+  ROS_DEBUG("%d\n",image.cols);
   return texturedPointCloud;
 }
 

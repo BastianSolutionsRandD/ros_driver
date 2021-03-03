@@ -45,6 +45,7 @@ roslint_python(
   scripts/pattern_marker
   scripts/request_data
   scripts/request_data_mono
+  scripts/request_data_mono_unch
   scripts/set_origin
   scripts/color_point_cloud
 )

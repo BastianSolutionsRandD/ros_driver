@@ -1,19 +1,32 @@
 <launch>
   <arg name="serial_stereo" doc="Serial of the Ensenso stereo camera" />
   <arg name="serial_mono" doc="Serial of a mono camera supported by the NxLib" />
-  <arg name="stereo_ns" value="stereo" />
-  <arg name="mono_ns" value="mono" />
+  <!-- <arg name="stereo_ns" value="stereo" />
+  <arg name="mono_ns" value="mono" /> -->
+  <arg name="stereo_ns" value="stereo_camera" />
+  <arg name="mono_ns" value="rgb_camera" />
+
+  <arg name="settings_mono" doc="Settings for the mono camera" />
+  <arg name="settings_stereo" doc="Settings for the mono camera" />
+
+
 
   <include file="$(find ensenso_camera)/launch/mono_stereo_nodelets.launch">
     <arg name="serial_stereo" value="$(arg serial_stereo)" />
     <arg name="serial_mono" value="$(arg serial_mono)" />
     <arg name="stereo_ns" value="$(arg stereo_ns)" />
     <arg name="mono_ns" value="$(arg mono_ns)" />
+    <arg name="settings_mono" value="$(arg settings_mono)" />
+    <arg name="settings_stereo" value="$(arg settings_stereo)" />
   </include>
 
-  <node pkg="ensenso_camera" type="color_point_cloud" name="color_point_cloud" >
+  <node pkg="ensenso_camera" type="color_point_cloud" name="color_point_cloud" output="screen" clear_params="true">
     <param name="rgb_serial" type="string" value="$(arg serial_mono)" />
     <param name="stereo_ns" type="string" value="$(arg stereo_ns)" />
     <param name="rgb_ns" type="string" value="$(arg mono_ns)" />
   </node>
+
+
+
+
 </launch>

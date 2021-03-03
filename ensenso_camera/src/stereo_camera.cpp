@@ -1009,10 +1009,13 @@ void StereoCamera::onTelecentricProjection(ensenso_camera_msgs::TelecentricProje
     if (goal->request_depth_image)
     {
       auto renderedImage = retrieveRenderedDepthMap(renderPointMap.result(), nxLibVersion, goal->frame);
+      std::cout << "stero camera request detph image" << std::endl;
 
       if (goal->publish_results)
       {
+
         projectedImagePublisher.publish(renderedImage);
+        std::cout << "projected image pub h x w, height: " << renderedImage->height << " and width: " << renderedImage->width << std::endl;
       }
       if (goal->include_results_in_response)
       {
