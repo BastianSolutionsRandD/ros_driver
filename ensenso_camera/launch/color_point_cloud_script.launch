@@ -1,0 +1,13 @@
+<launch>
+  <arg name="mono_serial" value="4103638864" />
+  <arg name="stereo_serial" value="204774" />
+  <!-- <arg name="target_frame" value="Workspace" /> -->
+  <arg name="mono_ns" value="rgb_camera" />
+  <arg name="stereo_ns" value="stereo_camera" />
+
+   <node pkg="ensenso_camera" type="color_point_cloud" name="color_point_cloud" >
+    <param name="rgb_serial" type="string" value="$(arg mono_serial)" />
+    <param name="stereo_ns" type="string" value="$(arg stereo_ns)" />
+    <param name="rgb_ns" type="string" value="$(arg mono_ns)" />
+  </node> 
+</launch>

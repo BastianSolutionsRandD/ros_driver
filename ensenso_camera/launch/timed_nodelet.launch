@@ -9,12 +9,15 @@
           settings:=$(arg mono_settings)"
     name="timed_roslaunch_1" output="screen">
   </node>
+
   <node pkg="ensenso_camera" type="timed_roslaunch.sh"
-    args="2 ensenso_camera nodelet_stereo.launch
+    args="5 ensenso_camera nodelet_stereo.launch
           settings:=$(arg stereo_settings)"
     name="timed_roslaunch_2" output="screen">
   </node>
 
     <include file="$(find ensenso_camera)/launch/depth_registered.launch" />
+    <param name="use_sim_time_camera" type="bool" value="True" />
+
 
 </launch>
