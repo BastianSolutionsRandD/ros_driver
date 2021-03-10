@@ -126,6 +126,8 @@ void NodeletMono::onInit()
   }
 
   camera = ::make_unique<MonoCamera>(nh, serial, fileCameraPath, cameraIsFixed, cameraFrame, targetFrame, linkFrame);
+//  ros::Duration(5).sleep();
+  ROS_ERROR("sleep on mono");
   if (!camera->open())
   {
     NODELET_ERROR("Failed to open the camera. Shutting down.");

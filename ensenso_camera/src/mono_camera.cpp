@@ -27,6 +27,7 @@ ros::Time MonoCamera::capture() const
 
   NxLibCommand capture(cmdCapture, serial);
   capture.parameters()[itmCameras] = serial;
+
   capture.execute();
 
   NxLibItem imageNode = cameraNode[itmImages][itmRaw];

@@ -142,6 +142,7 @@ void Nodelet::onInit()
 
   camera = ::make_unique<StereoCamera>(nh, serial, fileCameraPath, cameraIsFixed, cameraFrame, targetFrame, robotFrame,
                                      wristFrame, linkFrame, captureTimeout, std::move(virtualObjectHandler));
+
   if (!camera->open())
   {
     NODELET_ERROR("Failed to open the camera. Shutting down.");
