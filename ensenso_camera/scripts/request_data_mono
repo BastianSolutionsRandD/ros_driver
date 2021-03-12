@@ -16,7 +16,7 @@ def set_camera_parameters():
     
     timeout = rospy.get_param("~timeout", 100)
     
-    set_parameter_client = actionlib.SimpleActionClient("set_parameter", SetParameterAction)
+    set_parameter_client = actionlib.SimpleActionClient("rgb_camera/set_parameter", SetParameterAction)
     set_parameter_client.wait_for_server()
     if not set_parameter_client.wait_for_server(rospy.Duration(timeout)):
         rospy.logerr("The camera node is not running!")
@@ -25,9 +25,11 @@ def set_camera_parameters():
     #goal = SetParameterGoal()
     #print(help(goal))
     #sys.exit()
-    set_parameter_client.send_goal(SetParameterGoal(parameters=[Parameter(key=Parameter.AUTO_EXPOSURE, bool_value=True),
-    Parameter(key=Parameter.EXPOSURE, float_value=50.0), Parameter(key=Parameter.AUTO_GAIN, bool_value=False),]))
-    #Parameter(key=Parameter.GAIN, float_value=1.5) ]))
+    set_parameter_client.send_goal(SetParameterGoal(parameters=[Parameter(key=Parameter.AUTO_EXPOSURE, bool_value=False),
+#    Parameter(key=Parameter.EXPOSURE, float_value=0.1), Parameter(key=Parameter.AUTO_GAIN, bool_value=False),]))
+    Parameter(key=Parameter.GAIN, float_value=100),]))
+
+#    Parameter(key=Parameter.GAIN, float_value=) ]))
     set_parameter_client.wait_for_result()
     
     if set_parameter_client.get_state() != GoalStatus.SUCCEEDED:
@@ -39,7 +41,7 @@ def get_camera_parameters():
     
     timeout = rospy.get_param("~timeout", 60)
     
-    get_parameter_client = actionlib.SimpleActionClient("get_parameter", GetParameterAction)
+    get_parameter_client = actionlib.SimpleActionClient("rgb_camera/get_parameter", GetParameterAction)
     get_parameter_client.wait_for_server()
     if not get_parameter_client.wait_for_server(rospy.Duration(timeout)):
         rospy.logerr("The camera node is not running!")
@@ -85,7 +87,7 @@ def main():
     goal.publish_results = True
 
     #request_data_client = actionlib.SimpleActionClient(rgb_namespace+"/request_data", RequestDataMonoAction)
-    request_data_client = actionlib.SimpleActionClient("/request_data", RequestDataMonoAction)
+    request_data_client = actionlib.SimpleActionClient("rgb_camera/request_data", RequestDataMonoAction)
     if not request_data_client.wait_for_server(rospy.Duration(timeout)):
         rospy.logerr("The camera node is not running!")
         sys.exit()
@@ -110,9 +112,9 @@ if __name__ == "__main__":
         rospy.init_node("ensenso_camera_request_data_set_cam_params")
         rospy.loginfo('CAMERA PARAMETERS BEFORE:')
         get_camera_parameters()
-        #set_camera_parameters()
-        #rospy.loginfo('CAMERA PARAMETERS AFTER:')
-        #get_camera_parameters()
+        set_camera_parameters()
+        rospy.loginfo('CAMERA PARAMETERS AFTER:')
+        get_camera_parameters()
         main()
     except rospy.ROSInterruptException:
         pass
