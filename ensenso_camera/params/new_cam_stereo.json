@@ -478,21 +478,21 @@
 			"AutoExposure": true,
 			"AutoGain": true,
 			"Binning": 1,
-			"BlackLevelOffset": 0.599999999999999978,
+			"BlackLevelOffset": 0.5,
 			"BlackLevelOffsetCalibration": {
 				"Left": 0,
 				"Right": 0
 			},
-			"Exposure": 15.88996491228070163,
+			"Exposure": 5.51971929824561336,
 			"FlashDelay": -0.0500000000000000028,
-			"FlexView": false,
+			"FlexView": 4,
 			"FrontLight": false,
-			"Gain": 1.45999999999999996,
+			"Gain": 1,
 			"GainBoost": false,
 			"HardwareGamma": true,
 			"Hdr": false,
 			"ImageBuffer": {
-				"Count": 1,
+				"Count": 0,
 				"OverflowPolicy": "DiscardOld",
 				"Size": 1
 			},
@@ -503,12 +503,12 @@
 			"PixelClock": 43,
 			"Projector": true,
 			"ProjectorMinimumDutyCycle": 0.0500000000000000028,
-			"TargetBrightness": 128,
+			"TargetBrightness": 80,
 			"TriggerDelay": 0,
 			"TriggerMode": "Software",
 			"Triggered": true,
 			"UseDisparityMapAreaOfInterest": false,
-			"UseRecalibrator": false,
+			"UseRecalibrator": true,
 			"WaitForRecalibration": false
 		},
 		"DisparityMap": {
@@ -748,7 +748,7 @@
 		"IO": {
 			"Input": true,
 			"Output": {
-				"Duration": 5.88900000000000023,
+				"Duration": 5.51900000000000013,
 				"Mode": "LowActive"
 			}
 		},

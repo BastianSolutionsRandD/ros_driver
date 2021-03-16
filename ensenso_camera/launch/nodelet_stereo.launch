@@ -1,5 +1,5 @@
 <launch>
-  <arg name="stereo_serial" value="204774" />
+  <arg name="stereo_serial" value="216763" />
   <arg name="target_frame" value="" />
   <arg name="stereo_ns" value="stereo_camera" />
   <arg name="settings" doc="Settings for the mono camera" />

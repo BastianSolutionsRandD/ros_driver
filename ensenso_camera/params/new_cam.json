@@ -1,0 +1,166 @@
+{
+	"Calibration": {
+		"BinningShift": [
+			0,
+			0
+		],
+		"Camera": [
+			[
+				2679.72474847995636,
+				0,
+				0
+			],
+			[
+				0,
+				2675.0681090860935,
+				0
+			],
+			[
+				780.675058313747968,
+				528.116628417502739,
+				1
+			]
+		],
+		"Distortion": {
+			"K1": -0.188657871365769475,
+			"K2": 0.214579875534661124,
+			"K3": 0.533587964238969925,
+			"Rx": -0.0096281595662821972,
+			"Ry": -0.00331386846164535408,
+			"T1": -0.000391398758799180223,
+			"T2": -0.00225339018848691496
+		}
+	},
+	"EepromId": 1,
+	"FirmwareVersion": "4.93.1642",
+	"Images": {
+		"Raw": 13260323330.6580009,
+		"Rectified": 13260323330.6580009,
+		"WithOverlay": null
+	},
+	"Link": {
+		"Rotation": {
+			"Angle": 0.00826060541085999432,
+			"Axis": [
+				-0.795723617407803618,
+				0.128526576862113384,
+				0.591865562217930408
+			]
+		},
+		"Target": "216763",
+		"Translation": [
+			-58.5329522952360364,
+			33.2431967038273939,
+			-12.5825134539149595
+		]
+	},
+	"ModelName": "UI525xCP-C",
+	"Parameters": {
+		"Capture": {
+			"AutoBlackLevel": true,
+			"AutoExposure": true,
+			"AutoGain": true,
+			"Binning": 1,
+			"BlackLevelOffset": 0.352941176470588258,
+			"BlackLevelOffsetCalibration": 0,
+			"Exposure": 79.2519237093610371,
+			"Gain": 1,
+			"GainBoost": false,
+			"HardwareGamma": true,
+			"ImageBuffer": {
+				"Count": 1,
+				"OverflowPolicy": "DiscardOld",
+				"Size": 1
+			},
+			"Mirror": {
+				"Horizontal": false,
+				"Vertical": false
+			},
+			"PixelClock": 24,
+			"TargetBrightness": 80,
+			"TriggerDelay": 0,
+			"TriggerMode": "Software"
+		},
+		"IO": {
+			"Input": true,
+			"Output": {
+				"Duration": 79.2510000000000048,
+				"DutyCycle": 1,
+				"Frequency": 3.125,
+				"Mode": "Low"
+			}
+		},
+		"Overlay": {
+			"Text": {
+				"Angle": 0,
+				"Color": [
+					255,
+					0,
+					0
+				],
+				"Mirror": {
+					"Horizontal": false,
+					"Vertical": false
+				}
+			}
+		},
+		"TransportLayer": {
+			"BandwidthLimit": -2147483648
+		}
+	},
+	"Pose": {
+		"Rotation": {
+			"Angle": 0.00826060541085999432,
+			"Axis": [
+				-0.795723617407803618,
+				0.128526576862113384,
+				0.591865562217930408
+			]
+		},
+		"Translation": [
+			-58.5329522952360364,
+			33.2431967038273939,
+			-12.5825134539149595
+		]
+	},
+	"Sensor": {
+		"GlobalShutter": true,
+		"PixelSize": 4.5,
+		"Port": {
+			"Bandwidth": 1000,
+			"Gateway": null,
+			"IpAddress": "192.168.111.192",
+			"IpSubnetMask": "255.255.255.0",
+			"NetworkAdapter": {
+				"Gateway": null,
+				"IpAddress": "192.168.111.2",
+				"IpSubnetMask": "255.255.255.0",
+				"MAC": "30:65:ec:c8:10:85",
+				"Name": "enp64s0"
+			},
+			"Type": "Ethernet"
+		},
+		"Size": [
+			1600,
+			1200
+		],
+		"Temperature": 47.375
+	},
+	"SerialNumber": "4103638864",
+	"Status": {
+		"Available": false,
+		"Calibrated": true,
+		"FirmwareSupportsModel": true,
+		"IsSuppliedFirmwareVersion": true,
+		"LocalEepromFile": false,
+		"LowBandwidth": false,
+		"Open": true,
+		"Overtemperature": false,
+		"Paired": false,
+		"ValidCameraFirmware": true,
+		"ValidFirmware": true,
+		"ValidIpAddress": true,
+		"ValidProjectorFirmware": true
+	},
+	"Type": "Monocular"
+}
