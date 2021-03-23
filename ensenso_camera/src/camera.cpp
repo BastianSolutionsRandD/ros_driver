@@ -458,8 +458,28 @@ bool Camera::open()
   }
   if (!cameraIsAvailable())
   {
+    ROS_ERROR("Failed to open the %s camera, waiting and trying again.",serial.c_str());
+    ros::Duration(1.0).sleep();
+    double timeout = 60.0;
+    double timeout_reached = false;
+    double start_time = ros::Time::now().toSec();
+    while(ros::ok && !cameraIsAvailable() && timeout)
+    {
+      ROS_ERROR("Failed to open the %s camera, waiting in the while",serial.c_str());
+      if(ros::Time::now().toSec() - start_time > timeout)
+      {
+        ROS_ERROR("timeout reached for %s camera exiting",serial.c_str());
+        timeout_reached = true;
+        break;
+      }
+      ros::Duration(5.0).sleep();
+    }
+    if(timeout_reached)
+    {
+      ROS_ERROR("Failed to open the camera. Shutting down.");
     ROS_ERROR("The camera '%s' is already in use", serial.c_str());
     return false;
+    }
   }
 
   try

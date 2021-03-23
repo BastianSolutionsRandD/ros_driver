@@ -808,29 +808,11 @@
             },
             "Type": "Ethernet"
         },
-        "SerialNumber": "150443",
         "Size": [
             1280,
             1024
         ],
         "Temperature": 46.125
-    },
-    "SerialNumber": "150443",
-    "Status": {
-        "Available": false,
-        "Calibrated": true,
-        "DynamicCalibrationLimitReached": false,
-        "FirmwareSupportsModel": true,
-        "IsSuppliedFirmwareVersion": true,
-        "LocalEepromFile": false,
-        "LowBandwidth": false,
-        "Open": true,
-        "Overtemperature": false,
-        "Paired": true,
-        "ValidCameraFirmware": true,
-        "ValidFirmware": true,
-        "ValidIpAddress": true,
-        "ValidProjectorFirmware": true
     },
     "Type": "Stereo"
 }
