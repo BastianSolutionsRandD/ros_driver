@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="stereo_serial" value="150443" />
+  <arg name="stereo_serial" default="0" />
   <arg name="target_frame" value="" />
   <arg name="stereo_ns" value="stereo_camera" />
   <arg name="settings" doc="Settings for the mono camera" />
@@ -9,7 +9,7 @@
   <node pkg="nodelet" type="nodelet" name="Ensenso_$(arg stereo_serial)" args="load ensenso_camera/nodelet /manager_" output="screen" ns="$(arg stereo_ns)">
     <param name="serial" type="string" value="$(arg stereo_serial)" />
     <param name="target_frame" type="string" value="" />
-   <param name="camera_frame" type="string" value="camera_depth_optical_frame" />
+<!--   <param name="camera_frame" type="string" value="camera_depth_optical_frame" />-->
     <param name="settings" type="string" value="$(arg settings)" />
   </node>
 </launch>

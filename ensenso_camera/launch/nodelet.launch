@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="mono_serial" value="4103638865" />
-  <arg name="stereo_serial" value="150443" />
+  <arg name="mono_serial" default="0" />
+<!--  <arg name="stereo_serial" default="0" />-->
   <!-- <arg name="target_frame" value="Workspace" /> -->
   <arg name="mono_ns" value="rgb_camera" />
   <arg name="stereo_ns" value="stereo_camera" />
