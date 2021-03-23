@@ -2,8 +2,13 @@
 <launch>
   <arg name="mono_settings"   default="$(find ensenso_camera)/params/ensenso_mono_params3.json"/>
   <arg name="stereo_settings" default="$(find ensenso_camera)/params/ensenso_stereo_params3.json"/>
-  <arg name="mono_serial" default="4103638865"/>
-  <arg name="stereo_serial" default="150443"/>
+<!--  <arg name="mono_serial" default="4103638864"/>-->
+<!--  <arg name="stereo_serial" default="216763"/>-->
+  <arg name="mono_serial" default="$(env IDS_MONO_SERIAL)"/>
+  <arg name="stereo_serial" default="$(env IDS_STEREO_SERIAL)"/>
+<!-- Need this in bashrc
+  export IDS_MONO_SERIAL='4103638864'
+  export IDS_STEREO_SERIAL='216763'-->
 
   <!-- Realsense Camera Launch -->
   <node pkg="ensenso_camera" type="timed_roslaunch.sh"

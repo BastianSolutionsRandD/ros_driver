@@ -14,7 +14,7 @@
     <param name="serial" type="string" value="$(arg mono_serial)" />
     <!-- <param name="target_frame" type="string" value="$(arg target_frame)" /> -->
 <!--    <param name="link_frame" value="$(arg stereo_serial)_optical_frame" />-->
-     <param name="link_frame" value="camera_depth_optical_frame" />
+     <param name="link_frame" value="camera_link" />
    <param name="camera_frame" type="string" value="camera_color_optical_frame" />
     <param name="settings" type="string" value="$(arg settings)" />
   </node>

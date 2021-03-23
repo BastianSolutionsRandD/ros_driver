@@ -63,7 +63,7 @@
             "PixelClock": 24,
             "TargetBrightness": 80,
             "TriggerDelay": 0,
-            "TriggerMode": "Software"
+            "TriggerMode": "RisingEdge"
         },
         "IO": {
             "Input": true,
