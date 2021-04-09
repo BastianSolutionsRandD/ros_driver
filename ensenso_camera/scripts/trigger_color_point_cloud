@@ -1,0 +1,98 @@
+#!/usr/bin/env python
+import rospy
+import sys
+
+import actionlib
+from actionlib_msgs.msg import GoalStatus
+from ensenso_camera_msgs.msg import RequestDataAction, RequestDataGoal
+from ensenso_camera_msgs.msg import RequestDataMonoAction, RequestDataMonoGoal
+from ensenso_camera_msgs.msg import TexturedPointCloudAction, TexturedPointCloudGoal
+
+
+from std_srvs.srv import Trigger, TriggerResponse
+
+
+class Sample:
+    def __init__(self):
+        rospy.init_node("trigger_ids", anonymous=True)
+        self.trigger_service = rospy.Service('/ids/trigger', Trigger, self.trigger_response)
+
+        loop_rate = rospy.get_param("~rate", 2)
+        self.rgb_serial = rospy.get_param("~rgb_serial")
+        #print(rgb_serial)
+        #sys.exit()
+        stereo_namespace = rospy.get_param("~stereo_ns", "/stereo_camera")
+        rgb_namespace = rospy.get_param("~rgb_ns", "/rgb_camera")
+        timeout = rospy.get_param("~timeout", 120)
+
+        # The servers are scoped into the namespaces of the different cameras. Otherwise the topics would interfere.
+        self.request_data_client_stereo = actionlib.SimpleActionClient(stereo_namespace + "/request_data",
+                                                                  RequestDataAction)
+        self.request_data_client_mono = actionlib.SimpleActionClient(rgb_namespace + "/request_data",
+                                                                RequestDataMonoAction)
+
+        self.texture_point_cloud_client = actionlib.SimpleActionClient(stereo_namespace + "/texture_point_cloud",
+                                                                  TexturedPointCloudAction)
+
+        for client in [self.request_data_client_stereo, self.request_data_client_mono, self.texture_point_cloud_client]:
+            if not client.wait_for_server(rospy.Duration(timeout)):
+                rospy.logerr("The camera node is not running!")
+                sys.exit()
+
+        self.request_data_goal_stereo = RequestDataGoal()
+        self.request_data_goal_stereo.request_point_cloud = True
+
+
+        #my changes
+        self.request_data_goal_stereo.request_depth_image = True
+        self.request_data_goal_stereo.request_rectified_images = True
+        self.request_data_goal_stereo.publish_results = True
+
+        self.request_data_goal_stereo.request_disparity_map = True
+
+        self.request_data_goal_mono = RequestDataMonoGoal()
+        self.request_data_goal_mono.request_rectified_images = True
+        #my changes
+        self.request_data_goal_mono.request_raw_images = True
+
+        rate = rospy.Rate(loop_rate)
+    def capture(self):
+        self.request_data_client_stereo.send_goal(self.request_data_goal_stereo)
+        self.request_data_client_mono.send_goal(self.request_data_goal_mono)
+        self.request_data_client_stereo.wait_for_result()
+        self.request_data_client_mono.wait_for_result()
+
+        if self.request_data_client_stereo.get_state() != GoalStatus.SUCCEEDED:
+            rospy.logwarn("Stereo request action was not successful.")
+            result = self.request_data_client_stereo.get_result()
+            message = result.error
+            rospy.logwarn(message)
+
+        if self.request_data_client_mono.get_state() != GoalStatus.SUCCEEDED:
+            rospy.logwarn("Mono request action was not successful.")
+            result = self.request_data_client_mono.get_result()
+            message = result.error
+            rospy.logwarn(message)
+
+        # Request the textured PC after getting mono rgb image and stereo point cloud
+        texture_goal = TexturedPointCloudGoal()
+        texture_goal.use_opengl = True
+        texture_goal.publish_results = True
+        texture_goal.mono_serial = self.rgb_serial
+        texture_goal.far_plane = 4000.0
+        texture_goal.near_plane = 100.0
+
+        self.texture_point_cloud_client.send_goal(texture_goal)
+        self.texture_point_cloud_client.wait_for_result()
+
+    def trigger_response(self,request):
+        self.capture()
+        return TriggerResponse(
+          success=True,
+          message="Hey, roger that; we'll be right there!"
+        )
+
+if __name__ == "__main__":
+    s = Sample()
+    s.capture()
+    rospy.spin()
