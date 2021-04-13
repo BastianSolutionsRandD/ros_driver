@@ -62,7 +62,7 @@
             },
             "PixelClock": 24,
             "TargetBrightness": 80,
-            "TriggerDelay": 0,
+            "TriggerDelay": 1,
             "TriggerMode": "Software"
         },
         "IO": {

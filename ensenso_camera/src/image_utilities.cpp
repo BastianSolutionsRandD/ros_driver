@@ -179,7 +179,7 @@ sensor_msgs::ImagePtr depthImageFromNxLibNode(NxLibItem const& node, std::string
   out_msg.header.stamp.fromSec(timestamp - NXLIB_TIMESTAMP_OFFSET);
   out_msg.header.frame_id = frame;
   out_msg.encoding = sensor_msgs::image_encodings::TYPE_32FC1;
-  out_msg.image = depthImage;
+  out_msg.image = depthImage/=1000.0;
 
   return out_msg.toImageMsg();
 }

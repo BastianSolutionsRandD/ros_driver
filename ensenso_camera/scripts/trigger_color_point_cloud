@@ -15,7 +15,6 @@ from std_srvs.srv import Trigger, TriggerResponse
 class Sample:
     def __init__(self):
         rospy.init_node("trigger_ids", anonymous=True)
-        self.trigger_service = rospy.Service('/ids/trigger', Trigger, self.trigger_response)
 
         loop_rate = rospy.get_param("~rate", 2)
         self.rgb_serial = rospy.get_param("~rgb_serial")
@@ -56,6 +55,8 @@ class Sample:
         self.request_data_goal_mono.request_raw_images = True
 
         rate = rospy.Rate(loop_rate)
+        self.trigger_service = rospy.Service('/ids/trigger', Trigger, self.trigger_response)
+
     def capture(self):
         self.request_data_client_stereo.send_goal(self.request_data_goal_stereo)
         self.request_data_client_mono.send_goal(self.request_data_goal_mono)
