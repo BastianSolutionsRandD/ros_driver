@@ -36,10 +36,10 @@
     name="timed_roslaunch_2" output="screen">
   </node>
 
-<!--    <include file="$(find ensenso_camera)/launch/depth_registered.launch" />-->
+    <include file="$(find ensenso_camera)/launch/depth_registered.launch" />
 <group if="$(eval stereo_only)">
 
-<node pkg="ensenso_camera" type="trigger_color_point_cloud" name="trigger_color_point_cloud" >
+<node pkg="ensenso_camera" type="trigger_depth_image" name="trigger_depth_image" >
  <param name="rgb_serial" type="string" value="$(arg mono_serial)" />
  <param name="stereo_ns" type="string" value="$(arg stereo_ns)" />
  <param name="rgb_ns" type="string" value="$(arg mono_ns)" />
