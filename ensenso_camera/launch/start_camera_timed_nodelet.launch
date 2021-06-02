@@ -9,32 +9,43 @@
   <arg name="stereo_settings" default="$(find ensenso_camera)/params/ensenso_stereo_params3.json"/>
   <arg name="mono_ns" value="rgb_camera" />
   <arg name="stereo_ns" value="stereo_camera" />
+  <arg name="stereo_only" default="false" />
 
 <!-- Need this in bashrc
   export IDS_MONO_SERIAL='4103638864'
   export IDS_STEREO_SERIAL='216763'-->
 
-  <!-- Realsense Camera Launch -->
+  <!-- IDS RGB Camera Launch -->
+  <group unless="$(eval stereo_only)">
   <node pkg="ensenso_camera" type="timed_roslaunch.sh"
     args="0 ensenso_camera nodelet.launch
           settings:=$(arg mono_settings)
           mono_serial:=$(arg mono_serial)"
     name="timed_roslaunch_1" output="screen">
   </node>
+    </group>
+
+
+
+  <!-- Ensenso depth Camera Launch -->
   <node pkg="ensenso_camera" type="timed_roslaunch.sh"
     args="2 ensenso_camera nodelet_stereo.launch
           settings:=$(arg stereo_settings)
-          stereo_serial:=$(arg stereo_serial)"
+          stereo_serial:=$(arg stereo_serial)
+          need_manager:=$(arg stereo_only)"
     name="timed_roslaunch_2" output="screen">
   </node>
 
-    <include file="$(find ensenso_camera)/launch/depth_registered.launch" />
+<!--    <include file="$(find ensenso_camera)/launch/depth_registered.launch" />-->
+<group if="$(eval stereo_only)">
 
 <node pkg="ensenso_camera" type="trigger_color_point_cloud" name="trigger_color_point_cloud" >
  <param name="rgb_serial" type="string" value="$(arg mono_serial)" />
  <param name="stereo_ns" type="string" value="$(arg stereo_ns)" />
  <param name="rgb_ns" type="string" value="$(arg mono_ns)" />
 </node>
+</group>
+
 
 <!--    <param name="use_sim_time_camera" type="bool" value="True" />-->
 

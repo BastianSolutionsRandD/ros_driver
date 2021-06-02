@@ -17,23 +17,23 @@ class Sample:
         rospy.init_node("trigger_ids", anonymous=True)
 
         loop_rate = rospy.get_param("~rate", 2)
-        self.rgb_serial = rospy.get_param("~rgb_serial")
+#        self.rgb_serial = rospy.get_param("~rgb_serial")
         #print(rgb_serial)
         #sys.exit()
         stereo_namespace = rospy.get_param("~stereo_ns", "/stereo_camera")
-        rgb_namespace = rospy.get_param("~rgb_ns", "/rgb_camera")
+#        rgb_namespace = rospy.get_param("~rgb_ns", "/rgb_camera")
         timeout = rospy.get_param("~timeout", 120)
 
         # The servers are scoped into the namespaces of the different cameras. Otherwise the topics would interfere.
         self.request_data_client_stereo = actionlib.SimpleActionClient(stereo_namespace + "/request_data",
                                                                   RequestDataAction)
-        self.request_data_client_mono = actionlib.SimpleActionClient(rgb_namespace + "/request_data",
-                                                                RequestDataMonoAction)
+#        self.request_data_client_mono = actionlib.SimpleActionClient(rgb_namespace + "/request_data",
+#                                                                RequestDataMonoAction)
 
-        self.texture_point_cloud_client = actionlib.SimpleActionClient(stereo_namespace + "/texture_point_cloud",
-                                                                  TexturedPointCloudAction)
+#        self.texture_point_cloud_client = actionlib.SimpleActionClient(stereo_namespace + "/texture_point_cloud",
+#                                                                  TexturedPointCloudAction)
 
-        for client in [self.request_data_client_stereo, self.request_data_client_mono, self.texture_point_cloud_client]:
+        for client in [self.request_data_client_stereo]:
             if not client.wait_for_server(rospy.Duration(timeout)):
                 rospy.logerr("The camera node is not running!")
                 sys.exit()
@@ -59,9 +59,10 @@ class Sample:
 
     def capture(self):
         self.request_data_client_stereo.send_goal(self.request_data_goal_stereo)
-        self.request_data_client_mono.send_goal(self.request_data_goal_mono)
+#        rospy.sleep(1)
+#        self.request_data_client_mono.send_goal(self.request_data_goal_mono)
         self.request_data_client_stereo.wait_for_result()
-        self.request_data_client_mono.wait_for_result()
+#        self.request_data_client_mono.wait_for_result()
 
         if self.request_data_client_stereo.get_state() != GoalStatus.SUCCEEDED:
             rospy.logwarn("Stereo request action was not successful.")
@@ -69,22 +70,22 @@ class Sample:
             message = result.error
             rospy.logwarn(message)
 
-        if self.request_data_client_mono.get_state() != GoalStatus.SUCCEEDED:
-            rospy.logwarn("Mono request action was not successful.")
-            result = self.request_data_client_mono.get_result()
-            message = result.error
-            rospy.logwarn(message)
+#        if self.request_data_client_mono.get_state() != GoalStatus.SUCCEEDED:
+#            rospy.logwarn("Mono request action was not successful.")
+#            result = self.request_data_client_mono.get_result()
+#            message = result.error
+#            rospy.logwarn(message)
 
-        # Request the textured PC after getting mono rgb image and stereo point cloud
-        texture_goal = TexturedPointCloudGoal()
-        texture_goal.use_opengl = True
-        texture_goal.publish_results = True
-        texture_goal.mono_serial = self.rgb_serial
-        texture_goal.far_plane = 4000.0
-        texture_goal.near_plane = 100.0
+#        # Request the textured PC after getting mono rgb image and stereo point cloud
+#        texture_goal = TexturedPointCloudGoal()
+#        texture_goal.use_opengl = True
+#        texture_goal.publish_results = True
+#        texture_goal.mono_serial = self.rgb_serial
+#        texture_goal.far_plane = 4000.0
+#        texture_goal.near_plane = 100.0
 
-        self.texture_point_cloud_client.send_goal(texture_goal)
-        self.texture_point_cloud_client.wait_for_result()
+#        self.texture_point_cloud_client.send_goal(texture_goal)
+#        self.texture_point_cloud_client.wait_for_result()
 
     def trigger_response(self,request):
         self.capture()
